@@ -1,13 +1,13 @@
-﻿using EoWordle.ViewModels;
+﻿using EoWordle.Services;
 using System.Windows;
 
 namespace EoWordle;
 
 public partial class MainWindow : Window
 {
-    public MainWindow(GameViewModel gameViewModel)
+
+    public MainWindow()
     {
         InitializeComponent();
-        DataContext = gameViewModel;
     }
 }

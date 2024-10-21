@@ -13,10 +13,9 @@ public class GameViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    // Constructor with dependency injection
-    public GameViewModel(IWordService wordService)
+    public GameViewModel()
     {
-        _wordService = wordService;
+        _wordService = new WordService();
         CurrentView = new GameView();
         RandomWord = _wordService.GetWord();
     }
