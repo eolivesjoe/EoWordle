@@ -1,44 +1,38 @@
 ﻿using EoWordle.Services;
-using EoWordle;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Windows;
 using EoWordle.ViewModels;
+using EoWordle.Views;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
-public partial class App : Application
+namespace EoWordle
 {
-    private readonly IHost _host;
-
-    public App()
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
     {
-        _host = Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
-            {
-                ConfigureServices(services);
-            })
-            .Build();
+        public App()
+        {
+            ServiceCollection serviceColletion = new();
+            serviceColletion.ConfigureServices();
+
+            ServiceProvider serviceProvider = serviceColletion.BuildServiceProvider();
+
+            var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
     }
 
-    private void ConfigureServices(IServiceCollection services)
+    public static class ServiceCollectionExtensions
     {
-        services.AddSingleton<MainWindow>();
-        services.AddTransient<GameViewModel>();
-        services.AddTransient<IGameService, GameService>();
-        services.AddTransient<IWordService, WordService>();
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddSingleton<GameViewModel>();
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<GameView>();
+            services.AddSingleton<IGameService, GameService>();
+            services.AddSingleton<IWordService, WordService>();
+        }
     }
 
-    protected override async void OnStartup(StartupEventArgs e)
-    {
-        await _host.StartAsync();
-        var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-        mainWindow.Show();
-        base.OnStartup(e);
-    }
-
-    protected override async void OnExit(ExitEventArgs e)
-    {
-        await _host.StopAsync();
-        _host.Dispose();
-        base.OnExit(e);
-    }
 }

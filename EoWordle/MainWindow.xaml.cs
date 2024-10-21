@@ -1,13 +1,17 @@
-﻿using EoWordle.Services;
+﻿using EoWordle.ViewModels;
 using System.Windows;
 
-namespace EoWordle;
-
-public partial class MainWindow : Window
+namespace EoWordle
 {
-
-    public MainWindow()
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        public MainWindow(GameViewModel mainViewModel)
+        {
+            InitializeComponent();
+            DataContext = mainViewModel;
+        }
     }
 }

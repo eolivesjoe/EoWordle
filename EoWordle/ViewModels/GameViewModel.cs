@@ -9,14 +9,17 @@ public class GameViewModel : INotifyPropertyChanged
 {
     private UserControl _currentView;
     private readonly IWordService _wordService;
+    private readonly IGameService _gameService;
     private string _randomWord;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public GameViewModel()
+    public GameViewModel(IWordService wordService, IGameService gameService, GameView gameView)
     {
-        _wordService = new WordService();
-        CurrentView = new GameView();
+        _wordService = wordService;
+        _gameService = gameService;
+
+        CurrentView = gameView;
         RandomWord = _wordService.GetWord();
     }
 

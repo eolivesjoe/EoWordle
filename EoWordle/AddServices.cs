@@ -1,6 +1,0 @@
-﻿//namespace EoWordle
-//{
-//    class Services
-//    {
-//    }
-//}

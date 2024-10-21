@@ -12,8 +12,7 @@ public class WordService : IWordService
     {
         _words = LoadWordsFromFile(_filePath);
     }
-
-    public string GetWord()
+        public string GetWord()
     {
         var rand = new Random();
         return _words[rand.Next(0, _words.Count)];
