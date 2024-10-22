@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using EoWordle.Util;
+using System.IO;
 using System.Reflection;
 
 namespace EoWordle.Services;
@@ -31,11 +32,15 @@ public class WordService : IWordService
 
             using (StreamReader reader = new StreamReader(stream))
             {
-                string line = reader.ReadLine();
-                while (line != null)
+                // make sure we only add the words that are of the correct length
+                string line = string.Empty;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    _words.Add(line.Trim().ToUpper());
-                    line = reader.ReadLine();
+                    string trimmedWord = line.Trim().ToUpper();
+                    if (trimmedWord.Length == GameConfig.WordLength) 
+                    { 
+                        _words.Add(trimmedWord);
+                    }
                 }
             }
         }

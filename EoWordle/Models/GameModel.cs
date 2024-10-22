@@ -27,11 +27,6 @@ public class GameModel
         _correctWord = _wordService.GetWord();
     }
 
-    public string GetCorrectWord()
-    {
-        return _correctWord;
-    }
-
     public GuessResult CheckGuess(string guess)
     {
         if (guess.Length != _wordLength)
