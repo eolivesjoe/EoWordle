@@ -62,11 +62,11 @@ namespace EoWordle.Views
             var viewModel = DataContext as GameViewModel;
             if (e.Key == Key.Enter)
             {
-                viewModel?.SubmitCurrentGuess();
+                viewModel?.SubmitGuess();
             }
             if (e.Key == Key.Escape)
             {
-                viewModel?.ClearCurrentGuess();
+                viewModel?.ClearGuess();
             }
         }
 

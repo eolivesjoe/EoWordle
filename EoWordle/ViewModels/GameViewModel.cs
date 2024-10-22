@@ -76,18 +76,18 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
-    public void SubmitCurrentGuess()
+    public void SubmitGuess()
     {
         _currentGuess = _currentGuess.Trim().ToUpper();
         if (_currentGuess.Length != GameConfig.WordLength)
         {
-            MessageBox.Show("Please enter the correct length of the guess.");
+            MessageBox.Show($"Your guess needs to be {GameConfig.WordLength} letters long.");
             return;
         }
 
         if (!_gameModel.DoesWordExistInList(_currentGuess))
         {
-            MessageBox.Show("Word does not exist in the word list. Try again.");
+            MessageBox.Show("Word does not exist in the word list. Please try again.");
             return;
         }
 
@@ -112,12 +112,12 @@ public class GameViewModel : INotifyPropertyChanged
             }
             else
             {
-                ClearCurrentGuess();
+                ClearGuess();
             }
         }
     }
 
-    public void ClearCurrentGuess()
+    public void ClearGuess()
     {
         CurrentGuess = string.Empty;
     }
@@ -128,7 +128,7 @@ public class GameViewModel : INotifyPropertyChanged
         _correctWord = _gameModel.GetCorrectWord();
         _hasWon = false;
         _isGameOver = false;
-        ClearCurrentGuess();
+        ClearGuess();
 
         var gameView = CurrentView as GameView;
         gameView.ResetGrid();

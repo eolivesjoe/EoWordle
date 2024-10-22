@@ -26,12 +26,6 @@ public class GameModel
 
     public GuessResult CheckGuess(string guess)
     {
-        if (guess.Length != _wordLength)
-        {
-            throw new ArgumentException($"Guess must be {_wordLength} letters long");
-        }
-
-        guess = guess.ToUpper();
         _currentGuessIndex++;
         return _gameService.CheckGuess(guess, _correctWord);
     }
