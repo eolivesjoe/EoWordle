@@ -1,7 +1,8 @@
 ﻿<Window x:Class="EoWordle.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="EoWordle" Height="450" Width="800">
+        Title="EoWordle"
+        Background="Black">
     <Grid>
         <ContentControl Content="{Binding CurrentView}" />
     </Grid>

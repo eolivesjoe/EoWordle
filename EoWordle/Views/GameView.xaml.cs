@@ -6,57 +6,74 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace EoWordle.Views;
-
-public partial class GameView : UserControl
+namespace EoWordle.Views
 {
-    private int _gridSize;
-    private int _currentGuessRow = 0;
-    private TextBox[,] _textBoxes;
-
-    public GameView()
+    public partial class GameView : UserControl
     {
-        _gridSize = GameConfig.WordLength;
-        _textBoxes = new TextBox[_gridSize, _gridSize];
+        private int _gridSize;
+        private int _currentGuessRow = 0;
+        private TextBox[,] _textBoxes;
 
-        InitializeComponent();
-        CreateGrid();
-    }
-
-    private void CreateGrid()
-    {
-        for (int i = 0; i != _gridSize; ++i)
+        public GameView()
         {
-            GuessesGrid.RowDefinitions.Add(new RowDefinition());
-            GuessesGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            _gridSize = GameConfig.WordLength;
+            _textBoxes = new TextBox[_gridSize, _gridSize];
+
+            InitializeComponent();
+            CreateGrid();
         }
 
-        for (int row = 0; row != _gridSize; ++row)
+        // Init the game grid
+        private void CreateGrid()
         {
-            for (int col = 0; col != _gridSize; ++col)
+            for (int i = 0; i != _gridSize; ++i)
             {
-                TextBox textBox = new TextBox
-                {
-                    IsReadOnly = true,
-                    Background = Brushes.White,
-                    Margin = new Thickness(5),
-                    FontSize = 16
-                };
-                Grid.SetRow(textBox, row);
-                Grid.SetColumn(textBox, col);
+                GuessesGrid.RowDefinitions.Add(new RowDefinition());
+                GuessesGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
 
-                _textBoxes[row, col] = textBox;
-                GuessesGrid.Children.Add(textBox);
+            for (int row = 0; row != _gridSize; ++row)
+            {
+                for (int col = 0; col != _gridSize; ++col)
+                {
+                    TextBox textBox = new TextBox
+                    {
+                        IsReadOnly = true,
+                        Background = Brushes.White,
+                        Margin = new Thickness(5),
+                        FontSize = 16,
+                        Width = 50,
+                        Height = 50,
+                        TextAlignment = TextAlignment.Center,
+                        VerticalContentAlignment = VerticalAlignment.Center
+                    };
+                    Grid.SetRow(textBox, row);
+                    Grid.SetColumn(textBox, col);
+
+                    _textBoxes[row, col] = textBox;
+                    GuessesGrid.Children.Add(textBox);
+                }
             }
         }
-    }
 
-    private void GuessTextBox_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
+        // Allow for both submit button and enter press
+        private void GuessTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            var textBox = sender as TextBox;
-            string guess = textBox.Text.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
+            if (e.Key == Key.Enter)
+            {
+                SubmitGuess();
+            }
+        }
+
+        private void SubmitButton(object sender, RoutedEventArgs e)
+        {
+            SubmitGuess();
+        }
+
+        private void SubmitGuess()
+        {
+            var guessTextBox = (TextBox)FindName("GuessTextBox");
+            string guess = guessTextBox.Text.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
 
             if (guess?.Length == _gridSize)
             {
@@ -66,28 +83,27 @@ public partial class GameView : UserControl
                 AddGuessToGrid(result);
                 _currentGuessRow++;
 
-                textBox.Text = string.Empty;
+                guessTextBox.Text = string.Empty;
 
                 if (_currentGuessRow == _gridSize)
                 {
                     MessageBox.Show("No more guesses left!");
-                    textBox.IsEnabled = false;
+                    guessTextBox.IsEnabled = false;
                 }
             }
-            else 
+            else
             {
-                MessageBox.Show("Do the correct length of guess you fucking moron");
+                MessageBox.Show("Please enter the correct length of the guess.");
             }
         }
-    }
 
-    private void AddGuessToGrid(GuessResult result)
-    {
-        for (int col = 0; col < _gridSize; col++)
+        private void AddGuessToGrid(GuessResult result)
         {
-            _textBoxes[_currentGuessRow, col].Text = result.Guess[col].ToString();
-            _textBoxes[_currentGuessRow, col].Background = result.Colours[col];
-
+            for (int col = 0; col < _gridSize; col++)
+            {
+                _textBoxes[_currentGuessRow, col].Text = result.Guess[col].ToString();
+                _textBoxes[_currentGuessRow, col].Background = result.Colours[col];
+            }
         }
     }
 }

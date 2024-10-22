@@ -13,6 +13,7 @@ namespace EoWordle
     public partial class App : Application
     {
 
+        // Set up DI for the project
         public App()
         {
             ServiceCollection serviceColletion = new();
