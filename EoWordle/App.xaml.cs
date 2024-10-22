@@ -1,4 +1,5 @@
-﻿using EoWordle.Services;
+﻿using EoWordle.Models;
+using EoWordle.Services;
 using EoWordle.ViewModels;
 using EoWordle.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ namespace EoWordle
     /// </summary>
     public partial class App : Application
     {
+
         public App()
         {
             ServiceCollection serviceColletion = new();
@@ -28,11 +30,11 @@ namespace EoWordle
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddSingleton<GameViewModel>();
-            services.AddSingleton<MainWindow>();
+            services.AddSingleton<GameModel>();
             services.AddSingleton<GameView>();
+            services.AddSingleton<MainWindow>();
             services.AddSingleton<IGameService, GameService>();
             services.AddSingleton<IWordService, WordService>();
         }
     }
-
 }

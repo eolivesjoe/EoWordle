@@ -1,26 +1,21 @@
 ﻿using System.ComponentModel;
-using EoWordle.Services;
 using System.Windows.Controls;
 using EoWordle.Views;
+using EoWordle.Models;
 
 namespace EoWordle.ViewModels;
 
 public class GameViewModel : INotifyPropertyChanged
 {
     private UserControl _currentView;
-    private readonly IWordService _wordService;
-    private readonly IGameService _gameService;
-    private string _randomWord;
+    private readonly GameModel _gameModel;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public GameViewModel(IWordService wordService, IGameService gameService, GameView gameView)
+    public GameViewModel(GameView gameView, GameModel gameModel)
     {
-        _wordService = wordService;
-        _gameService = gameService;
-
         CurrentView = gameView;
-        RandomWord = _wordService.GetWord();
+        _gameModel = gameModel;
     }
 
     public UserControl CurrentView
@@ -33,18 +28,13 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
-    public string RandomWord
-    {
-        get => _randomWord;
-        set
-        {
-            _randomWord = value;
-            OnPropertyChanged(nameof(RandomWord));
-        }
-    }
-
     protected virtual void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public GuessResult SubmitGuess(string guess)
+    {
+        return _gameModel.CheckGuess(guess);
     }
 }

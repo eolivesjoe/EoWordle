@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace EoWordle.Services;
 
+// Load in words from the txt file and get a random target word when starting the game
 public class WordService : IWordService
 {
     private readonly List<string> _words = new();
@@ -10,24 +11,22 @@ public class WordService : IWordService
 
     public WordService()
     {
-        _words = LoadWordsFromFile(_filePath);
+        LoadWordsFromFile(_filePath);
     }
-        public string GetWord()
+    public string GetWord()
     {
         var rand = new Random();
         return _words[rand.Next(0, _words.Count)];
     }
 
-    private List<string> LoadWordsFromFile(string filePath)
+    private void LoadWordsFromFile(string filePath)
     {
-        var words = new List<string>();
-
         var assembly = Assembly.GetExecutingAssembly();
         using (Stream stream = assembly.GetManifestResourceStream(filePath))
         {
             if (stream == null)
             {
-                throw new ArgumentNullException(nameof(stream), $"Resource '{filePath}' not found.");
+                throw new ArgumentNullException(nameof(stream), $"Resource not found.");
             }
 
             using (StreamReader reader = new StreamReader(stream))
@@ -35,14 +34,11 @@ public class WordService : IWordService
                 string line = reader.ReadLine();
                 while (line != null)
                 {
-                    words.Add(line.Trim());
+                    _words.Add(line.Trim().ToUpper());
                     line = reader.ReadLine();
                 }
             }
         }
-
-        return words;
     }
-
 }
 
