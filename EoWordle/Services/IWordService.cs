@@ -2,6 +2,7 @@
 
 public interface IWordService
 {
-    public string GetWord();
+    public string GetRandomWord();
+    public List<string> GetWordList();
 }
 

@@ -17,17 +17,13 @@
 
             <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="10">
                 <TextBox x:Name="GuessTextBox" Width="200"
+                         Text="{Binding CurrentGuess, UpdateSourceTrigger=PropertyChanged}"
                          VerticalAlignment="Bottom" 
                          KeyDown="GuessTextBox_KeyDown" 
                          Height="50" Padding="10" FontSize="16" 
                          HorizontalContentAlignment="Center" 
                          VerticalContentAlignment="Center"
                          MinWidth="150" />
-
-                <Button Content="Submit" 
-                        Width="80" Height="50" 
-                        Margin="10,0,0,0" 
-                        Click="SubmitButton"/>
             </StackPanel>
         </Grid>
     </Viewbox>

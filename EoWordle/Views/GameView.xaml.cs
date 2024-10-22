@@ -23,7 +23,7 @@ namespace EoWordle.Views
             CreateGrid();
         }
 
-        // Init the game grid
+        // setup the game grid
         private void CreateGrid()
         {
             for (int i = 0; i != _gridSize; ++i)
@@ -56,53 +56,41 @@ namespace EoWordle.Views
             }
         }
 
-        // Allow for both submit button and enter press
+        // handling for key presses
         private void GuessTextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            var viewModel = DataContext as GameViewModel;
             if (e.Key == Key.Enter)
             {
-                SubmitGuess();
+                viewModel?.SubmitCurrentGuess();
             }
-        }
-
-        private void SubmitButton(object sender, RoutedEventArgs e)
-        {
-            SubmitGuess();
-        }
-
-        private void SubmitGuess()
-        {
-            var guessTextBox = (TextBox)FindName("GuessTextBox");
-            string guess = guessTextBox.Text.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
-
-            if (guess?.Length == _gridSize)
+            if (e.Key == Key.Escape)
             {
-                var viewModel = DataContext as GameViewModel;
-                var result = viewModel?.SubmitGuess(guess);
-
-                AddGuessToGrid(result);
-                _currentGuessRow++;
-
-                guessTextBox.Text = string.Empty;
-
-                if (_currentGuessRow == _gridSize)
-                {
-                    MessageBox.Show("No more guesses left!");
-                    guessTextBox.IsEnabled = false;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please enter the correct length of the guess.");
+                viewModel?.ClearCurrentGuess();
             }
         }
 
-        private void AddGuessToGrid(GuessResult result)
+        // add the guess result to the grid
+        public void AddGuessToGrid(GuessResult result)
         {
             for (int col = 0; col < _gridSize; col++)
             {
                 _textBoxes[_currentGuessRow, col].Text = result.Guess[col].ToString();
                 _textBoxes[_currentGuessRow, col].Background = result.Colours[col];
+            }
+            _currentGuessRow++;
+        }
+
+        public void ResetGrid()
+        {
+            _currentGuessRow = 0;
+            for (int row = 0; row < _gridSize; row++)
+            {
+                for (int col = 0; col < _gridSize; col++)
+                {
+                    _textBoxes[row, col].Text = string.Empty;
+                    _textBoxes[row, col].Background = Brushes.White;
+                }
             }
         }
     }

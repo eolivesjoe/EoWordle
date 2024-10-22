@@ -14,10 +14,14 @@ public class WordService : IWordService
     {
         LoadWordsFromFile(_filePath);
     }
-    public string GetWord()
+    public string GetRandomWord()
     {
         var rand = new Random();
         return _words[rand.Next(0, _words.Count)];
+    }
+    public List<string> GetWordList()
+    {
+        return _words;
     }
 
     private void LoadWordsFromFile(string filePath)

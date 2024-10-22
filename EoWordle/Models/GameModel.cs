@@ -1,6 +1,5 @@
 ﻿using EoWordle.Services;
 using EoWordle.Util;
-using System.Windows.Media;
 
 namespace EoWordle.Models;
 
@@ -14,8 +13,6 @@ public class GameModel
     private string _correctWord;
     private int _currentGuessIndex = 0;
 
-    public bool IsGameOver = false;
-
     public GameModel(IWordService wordService, IGameService gameService)
     {
         _wordLength = GameConfig.WordLength;
@@ -24,7 +21,7 @@ public class GameModel
         _gameService = gameService;
         _wordService = wordService;
 
-        _correctWord = _wordService.GetWord();
+        _correctWord = _wordService.GetRandomWord();
     }
 
     public GuessResult CheckGuess(string guess)
@@ -34,13 +31,35 @@ public class GameModel
             throw new ArgumentException($"Guess must be {_wordLength} letters long");
         }
 
-        if (_currentGuessIndex >= _maxGuesses)
-        {
-            throw new InvalidOperationException("No more guesses allowed.");
-        }
-
         guess = guess.ToUpper();
         _currentGuessIndex++;
         return _gameService.CheckGuess(guess, _correctWord);
+    }
+
+    public bool DoesWordExistInList(string guess)
+    {
+        var wordList = _wordService.GetWordList();
+        return wordList.Contains(guess);
+    }
+
+    public string GetCorrectWord()
+    {
+        return _correctWord;
+    }
+
+    public bool WonGame(string guess)
+    {
+        return guess == _correctWord;
+    }
+
+    public bool GameOver()
+    {
+        return _currentGuessIndex >= _maxGuesses;
+    }
+
+    public void ResetGame()
+    {
+        _currentGuessIndex = 0;
+        _correctWord = _wordService.GetRandomWord();
     }
 }
