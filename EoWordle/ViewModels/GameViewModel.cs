@@ -129,7 +129,7 @@ public class GameViewModel : INotifyPropertyChanged
         gameView?.ResetGrid();
     }
 
-    protected virtual void OnPropertyChanged(string propertyName)
+    protected void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
