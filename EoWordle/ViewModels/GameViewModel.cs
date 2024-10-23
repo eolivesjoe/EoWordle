@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using EoWordle.Models;
@@ -11,10 +12,10 @@ public class GameViewModel : INotifyPropertyChanged
 {
     private readonly GameModel _gameModel;
     private UserControl _currentView;
-    private string _correctWord;
     private bool _hasWon;
     private bool _isGameOver;
     private string _currentGuess;
+    private bool _usesCustomWord = false;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -22,18 +23,13 @@ public class GameViewModel : INotifyPropertyChanged
     {
         _gameModel = gameModel;
         _currentView = gameView;
-        _correctWord = _gameModel.GetCorrectWord();
         _currentGuess = string.Empty;
     }
 
-    public string CorrectWord
+    internal void SetUpCustomWord(string customWord)
     {
-        get => _correctWord;
-        private set
-        {
-            _correctWord = value;
-            OnPropertyChanged(nameof(CorrectWord));
-        }
+        _gameModel.SetCorrectWord(customWord);
+        _usesCustomWord = true;
     }
 
     public bool HasWon
@@ -85,7 +81,7 @@ public class GameViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (!_gameModel.DoesWordExistInList(_currentGuess))
+        if (!_gameModel.DoesWordExistInList(_currentGuess) && !_usesCustomWord)
         {
             MessageBox.Show("Word does not exist in the word list. Please try again.");
             return;
@@ -96,18 +92,18 @@ public class GameViewModel : INotifyPropertyChanged
         if (result != null)
         {
             var gameView = CurrentView as GameView;
-            gameView.AddGuessToGrid(result);
+            gameView?.AddGuessToGrid(result);
 
             if (_gameModel.WonGame(_currentGuess))
             {
                 _hasWon = true;
-                MessageBox.Show($"Nice job! The correct word was {_correctWord}.");
+                MessageBox.Show($"Nice job! The correct word was {_gameModel.GetCorrectWord()}.");
                 ResetGame();
             }
             else if (_gameModel.GameOver())
             {
                 _isGameOver = true;
-                MessageBox.Show($"Game over! The correct word was {_correctWord}.");
+                MessageBox.Show($"Game over! The correct word was {_gameModel.GetCorrectWord()}.");
                 ResetGame();
             }
             else
@@ -125,13 +121,13 @@ public class GameViewModel : INotifyPropertyChanged
     public void ResetGame()
     {
         _gameModel.ResetGame();
-        _correctWord = _gameModel.GetCorrectWord();
+        _usesCustomWord = false;
         _hasWon = false;
         _isGameOver = false;
         ClearGuess();
 
         var gameView = CurrentView as GameView;
-        gameView.ResetGrid();
+        gameView?.ResetGrid();
     }
 
     protected virtual void OnPropertyChanged(string propertyName)

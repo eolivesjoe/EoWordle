@@ -10,7 +10,7 @@ public class GameModel
 
     private readonly int _wordLength;
     private readonly int _maxGuesses;
-    private string _correctWord;
+    private string _correctWord = string.Empty;
     private int _currentGuessIndex = 0;
 
     public GameModel(IWordService wordService, IGameService gameService)
@@ -21,7 +21,7 @@ public class GameModel
         _gameService = gameService;
         _wordService = wordService;
 
-        _correctWord = _wordService.GetRandomWord();
+        SetCorrectWord(_wordService.GetRandomWord());
     }
 
     public GuessResult CheckGuess(string guess)
@@ -39,6 +39,11 @@ public class GameModel
     public string GetCorrectWord()
     {
         return _correctWord;
+    }
+
+    public void SetCorrectWord(string correctWord)
+    {
+        _correctWord = correctWord;
     }
 
     public bool WonGame(string guess)

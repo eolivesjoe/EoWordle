@@ -11,13 +11,15 @@ namespace EoWordle.Views
     public partial class GameView : UserControl
     {
         private int _gridSize;
+        private int _maxGuesses;
         private int _currentGuessRow = 0;
         private TextBox[,] _textBoxes;
 
         public GameView()
         {
             _gridSize = GameConfig.WordLength;
-            _textBoxes = new TextBox[_gridSize, _gridSize];
+            _maxGuesses = GameConfig.MaxGuesses;
+            _textBoxes = new TextBox[_maxGuesses, _gridSize];
 
             InitializeComponent();
             CreateGrid();
@@ -28,11 +30,15 @@ namespace EoWordle.Views
         {
             for (int i = 0; i != _gridSize; ++i)
             {
-                GuessesGrid.RowDefinitions.Add(new RowDefinition());
                 GuessesGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
-            for (int row = 0; row != _gridSize; ++row)
+            for (int i = 0; i != _maxGuesses; ++i)
+            {
+                GuessesGrid.RowDefinitions.Add(new RowDefinition());
+            }
+
+            for (int row = 0; row != _maxGuesses; ++row)
             {
                 for (int col = 0; col != _gridSize; ++col)
                 {
@@ -84,7 +90,7 @@ namespace EoWordle.Views
         public void ResetGrid()
         {
             _currentGuessRow = 0;
-            for (int row = 0; row < _gridSize; row++)
+            for (int row = 0; row < _maxGuesses; row++)
             {
                 for (int col = 0; col < _gridSize; col++)
                 {

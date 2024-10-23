@@ -46,7 +46,6 @@ public class GameService : IGameService
                 }
             }
         }
-
         return result;
     }
 }
