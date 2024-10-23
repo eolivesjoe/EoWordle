@@ -6,97 +6,96 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace EoWordle.Views
+namespace EoWordle.Views;
+
+public partial class GameView : UserControl
 {
-    public partial class GameView : UserControl
+    private int _wordLength;
+    private int _maxGuesses;
+    private int _currentGuessRow = 0;
+    private TextBox[,] _textBoxes;
+
+    public GameView()
     {
-        private int _gridSize;
-        private int _maxGuesses;
-        private int _currentGuessRow = 0;
-        private TextBox[,] _textBoxes;
+        _wordLength = GameConfig.WordLength;
+        _maxGuesses = GameConfig.MaxGuesses;
+        _textBoxes = new TextBox[_maxGuesses, _wordLength];
 
-        public GameView()
+        InitializeComponent();
+        CreateGrid();
+    }
+
+    // setup the game grid
+    private void CreateGrid()
+    {
+        for (int i = 0; i != _wordLength; ++i)
         {
-            _gridSize = GameConfig.WordLength;
-            _maxGuesses = GameConfig.MaxGuesses;
-            _textBoxes = new TextBox[_maxGuesses, _gridSize];
-
-            InitializeComponent();
-            CreateGrid();
+            GuessesGrid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
-        // setup the game grid
-        private void CreateGrid()
+        for (int i = 0; i != _maxGuesses; ++i)
         {
-            for (int i = 0; i != _gridSize; ++i)
-            {
-                GuessesGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            }
+            GuessesGrid.RowDefinitions.Add(new RowDefinition());
+        }
 
-            for (int i = 0; i != _maxGuesses; ++i)
+        for (int row = 0; row != _maxGuesses; ++row)
+        {
+            for (int col = 0; col != _wordLength; ++col)
             {
-                GuessesGrid.RowDefinitions.Add(new RowDefinition());
-            }
-
-            for (int row = 0; row != _maxGuesses; ++row)
-            {
-                for (int col = 0; col != _gridSize; ++col)
+                TextBox textBox = new TextBox
                 {
-                    TextBox textBox = new TextBox
-                    {
-                        IsReadOnly = true,
-                        Background = Brushes.White,
-                        Margin = new Thickness(5),
-                        FontSize = 16,
-                        Width = 50,
-                        Height = 50,
-                        TextAlignment = TextAlignment.Center,
-                        VerticalContentAlignment = VerticalAlignment.Center
-                    };
-                    Grid.SetRow(textBox, row);
-                    Grid.SetColumn(textBox, col);
+                    IsReadOnly = true,
+                    Background = Brushes.White,
+                    Margin = new Thickness(5),
+                    FontSize = 16,
+                    Width = 50,
+                    Height = 50,
+                    TextAlignment = TextAlignment.Center,
+                    VerticalContentAlignment = VerticalAlignment.Center
+                };
+                Grid.SetRow(textBox, row);
+                Grid.SetColumn(textBox, col);
 
-                    _textBoxes[row, col] = textBox;
-                    GuessesGrid.Children.Add(textBox);
-                }
+                _textBoxes[row, col] = textBox;
+                GuessesGrid.Children.Add(textBox);
             }
         }
+    }
 
-        // handling for key presses
-        private void GuessTextBox_KeyDown(object sender, KeyEventArgs e)
+    // handling for key presses
+    private void GuessTextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        var viewModel = DataContext as GameViewModel;
+        if (e.Key == Key.Enter)
         {
-            var viewModel = DataContext as GameViewModel;
-            if (e.Key == Key.Enter)
-            {
-                viewModel?.SubmitGuess();
-            }
-            if (e.Key == Key.Escape)
-            {
-                viewModel?.ClearGuess();
-            }
+            viewModel?.SubmitGuess();
         }
-
-        // add the guess result to the grid
-        public void AddGuessToGrid(GuessResult result)
+        if (e.Key == Key.Escape)
         {
-            for (int col = 0; col < _gridSize; col++)
-            {
-                _textBoxes[_currentGuessRow, col].Text = result.Guess[col].ToString();
-                _textBoxes[_currentGuessRow, col].Background = result.Colours[col];
-            }
-            _currentGuessRow++;
+            viewModel?.ClearGuess();
         }
+    }
 
-        public void ResetGrid()
+    // add the guess result to the grid
+    public void AddGuessToGrid(GuessResult result)
+    {
+        for (int col = 0; col < _wordLength; col++)
         {
-            _currentGuessRow = 0;
-            for (int row = 0; row < _maxGuesses; row++)
+            _textBoxes[_currentGuessRow, col].Text = result.Guess[col].ToString();
+            _textBoxes[_currentGuessRow, col].Background = result.Colours[col];
+        }
+        _currentGuessRow++;
+    }
+
+    public void ResetGrid()
+    {
+        _currentGuessRow = 0;
+        for (int row = 0; row < _maxGuesses; row++)
+        {
+            for (int col = 0; col < _wordLength; col++)
             {
-                for (int col = 0; col < _gridSize; col++)
-                {
-                    _textBoxes[row, col].Text = string.Empty;
-                    _textBoxes[row, col].Background = Brushes.White;
-                }
+                _textBoxes[row, col].Text = string.Empty;
+                _textBoxes[row, col].Background = Brushes.White;
             }
         }
     }

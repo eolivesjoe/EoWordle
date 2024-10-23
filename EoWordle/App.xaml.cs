@@ -1,57 +1,35 @@
-﻿using EoWordle.Models;
-using EoWordle.Services;
-using EoWordle.ViewModels;
-using EoWordle.Views;
+﻿using EoWordle.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Windows;
 
-namespace EoWordle
+namespace EoWordle;
+
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    private IServiceProvider _serviceProvider;
+
+    // Set up DI for the project
+    public App()
     {
+        ServiceCollection serviceColletion = new();
+        serviceColletion.ConfigureServices();
 
-        private IServiceProvider _serviceProvider;
-
-        // Set up DI for the project
-        public App()
-        {
-            ServiceCollection serviceColletion = new();
-            serviceColletion.ConfigureServices();
-
-            _serviceProvider = serviceColletion.BuildServiceProvider();
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            string customWord = string.Empty;
-            if(e.Args.Length > 0 && !string.IsNullOrEmpty(e.Args[0]))
-            {
-                customWord = e.Args[0].Trim().ToUpper();
-                var gameViewModel = _serviceProvider?.GetRequiredService<GameViewModel>();
-                gameViewModel?.SetUpCustomWord(customWord);
-            }
-
-            var mainWindow = _serviceProvider?.GetRequiredService<MainWindow>();
-            mainWindow?.Show();
-        }
+        _serviceProvider = serviceColletion.BuildServiceProvider();
     }
 
-    public static class ServiceCollectionExtensions
+    protected override void OnStartup(StartupEventArgs e)
     {
-        public static void ConfigureServices(this IServiceCollection services)
+        base.OnStartup(e);
+
+        string customWord = string.Empty;
+        if(e.Args.Length > 0 && !string.IsNullOrEmpty(e.Args[0]))
         {
-            services.AddSingleton<GameModel>();
-            services.AddSingleton<GameView>();
-            services.AddSingleton<GameViewModel>();
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<IGameService, GameService>();
-            services.AddSingleton<IWordService, WordService>();
+            customWord = e.Args[0].Trim().ToUpper();
+            var gameViewModel = _serviceProvider?.GetRequiredService<GameViewModel>();
+            gameViewModel?.SetUpCustomWord(customWord);
         }
+
+        var mainWindow = _serviceProvider?.GetRequiredService<MainWindow>();
+        mainWindow?.Show();
     }
 }

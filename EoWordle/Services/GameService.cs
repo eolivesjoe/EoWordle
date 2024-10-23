@@ -1,5 +1,4 @@
-﻿
-using EoWordle.Models;
+﻿using EoWordle.Models;
 using EoWordle.Util;
 using System.Windows.Media;
 
@@ -49,4 +48,3 @@ public class GameService : IGameService
         return result;
     }
 }
-

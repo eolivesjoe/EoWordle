@@ -14,11 +14,13 @@ public class WordService : IWordService
     {
         LoadWordsFromFile(_filePath);
     }
+
     public string GetRandomWord()
     {
         var rand = new Random();
         return _words[rand.Next(0, _words.Count)];
     }
+
     public List<string> GetWordList()
     {
         return _words;
@@ -31,6 +33,7 @@ public class WordService : IWordService
         {
             if (stream == null)
             {
+                // TODO: Real project would have proper error handling
                 throw new ArgumentNullException(nameof(stream), $"Resource not found.");
             }
 
@@ -50,4 +53,3 @@ public class WordService : IWordService
         }
     }
 }
-
