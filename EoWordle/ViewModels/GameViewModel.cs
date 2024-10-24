@@ -25,10 +25,14 @@ public class GameViewModel : INotifyPropertyChanged
         _currentGuess = string.Empty;
     }
 
-    internal void SetUpCustomWord(string customWord)
+    // ensure that a word entered via the cmd is valid before setting it.
+    public void SetUpCustomWord(string customWord)
     {
-        _gameModel.SetCorrectWord(customWord);
-        _usesCustomWord = true;
+        if (_gameModel.WordExistsInList(customWord))
+        {
+            _gameModel.SetCorrectWord(customWord);
+            _usesCustomWord = true;
+        }
     }
 
     public bool HasWon
@@ -80,7 +84,7 @@ public class GameViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (!_gameModel.DoesWordExistInList(_currentGuess) && !_usesCustomWord)
+        if (!_gameModel.WordExistsInList(_currentGuess) && !_usesCustomWord)
         {
             MessageBox.Show("Word does not exist in the word list. Please try again.");
             return;
@@ -129,7 +133,7 @@ public class GameViewModel : INotifyPropertyChanged
         gameView?.ResetGrid();
     }
 
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

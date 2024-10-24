@@ -76,7 +76,6 @@ public partial class GameView : UserControl
         }
     }
 
-    // add the guess result to the grid
     public void AddGuessToGrid(GuessResult result)
     {
         for (int col = 0; col < _wordLength; col++)

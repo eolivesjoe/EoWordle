@@ -30,7 +30,7 @@ public class GameModel
         return _gameService.CheckGuess(guess, _correctWord);
     }
 
-    public bool DoesWordExistInList(string guess)
+    public bool WordExistsInList(string guess)
     {
         var wordList = _wordService.GetWordList();
         return wordList.Contains(guess);
