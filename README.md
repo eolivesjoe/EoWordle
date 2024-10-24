@@ -2,7 +2,7 @@
 
 EoWordle is a Wordle-inspired game built using C# and WPF with a customisable word feature and dynamic game logic.
 
-## Default Launch Instructions:
+## Launch Instructions:
 Open a terminal, navigate to the `EoWordle` project folder, then run the following commands:
 - `dotnet build`
 - `dotnet run`
@@ -14,7 +14,7 @@ To run EoWordle with a specific word as the correct answer, use command line arg
 
 The following restrictions apply to `<correct-word>`:
 - must exist in words list (`EoWordle\Util\words.txt`)
-- must be of the length specified in `EoWordle\Util\GameConfig.cs`
+- must be of the word length specified in `EoWordle\Util\GameConfig.cs`
 
 If a restriction is violated, EoWordle will ignore the input and select a random word from the words list which is of the specified GameConfig word length (ie: same as default launch).
 
@@ -31,10 +31,7 @@ If a restriction is violated, EoWordle will ignore the input and select a random
 ## Assumptions:
 - `words.txt` exists in `EoWordle\Util\` and contains one word per line. it cannot be empty.
 - words in the list can only contain the letters a-z and A-Z.
-- app is running on Windows (no other OS tested)
-- the tests are based on the assumption that the GameConfig is set to classic Wordle rules (i.e 5 letters per word, and 6 guesses)
+- app is running on Windows (no other OS tested).
+- the tests assumes that GameConfig is set to classic Wordle rules (i.e 5 letters per word, and 6 guesses)
 
 The word list used can be found at `http://gwicks.net/dictionaries.htm`
-
-Please reach out if any questions arise. or if you need anything else at all.
-Have fun!
