@@ -14,7 +14,7 @@ public class GameServiceTests
     }
 
     [Test]
-    public void CheckGuess_CorrectGuess()
+    public void CheckGuessCorrectGuess()
     {
         // Arrange
         string guess = "APPLE";
@@ -31,7 +31,7 @@ public class GameServiceTests
     }
 
     [Test]
-    public void CheckGuess_PartialMatch_GrayAndYellow()
+    public void CheckGuessGrayAndYellow()
     {
         // Arrange
         string guess = "PIZZA";
@@ -49,7 +49,7 @@ public class GameServiceTests
     }
 
     [Test]
-    public void CheckGuess_PartialMatch_AllYellow()
+    public void CheckGuessAllYellow()
     {
         // Arrange
         string guess = "LEAPP";
@@ -67,7 +67,7 @@ public class GameServiceTests
     }
 
     [Test]
-    public void CheckGuess_NoMatches()
+    public void CheckGuessNoMatches()
     {
         // Arrange
         string guess = "ZZZZZ";
@@ -84,7 +84,7 @@ public class GameServiceTests
     }
 
     [Test]
-    public void CheckGuess_MultipleChars()
+    public void CheckGuessMultipleChars()
     {
         // Arrange
         string guess = "PAPPE";

@@ -32,7 +32,7 @@ public class GameService : IGameService
         // If not we paint it gray
         for (int i = 0;i != guess.Length; ++i)
         {
-            if (charExists[guess[i] - 'A'] > 0)
+            if (charExists[guess[i] - 'A'] > 0 && colours[i] != Brushes.Green)
             {
                 colours[i] = Brushes.Yellow;
                 charExists[guess[i] - 'A']--;
