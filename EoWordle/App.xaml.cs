@@ -27,7 +27,6 @@ public partial class App : Application
         string customWord = string.Empty;
         if(e.Args.Length > 0 && !string.IsNullOrEmpty(e.Args[0]))
         {
-            customWord = e.Args[0].Trim().ToUpper();
             var gameViewModel = _serviceProvider?.GetRequiredService<GameViewModel>();
             gameViewModel?.SetUpCustomWord(customWord);
         }

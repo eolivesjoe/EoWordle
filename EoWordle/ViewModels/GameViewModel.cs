@@ -27,9 +27,10 @@ public class GameViewModel : INotifyPropertyChanged
     // ensure that a word entered via the cmd is valid before setting it.
     public void SetUpCustomWord(string customWord)
     {
-        if (_gameModel.WordExistsInList(customWord))
+        string trimmedCustomWord = customWord.Trim().ToUpper();
+        if (_gameModel.WordExistsInList(trimmedCustomWord) && GameConfig.WordLength == trimmedCustomWord.Length)
         {
-            _gameModel.SetCorrectWord(customWord);
+            _gameModel.SetCorrectWord(trimmedCustomWord);
         }
     }
 
