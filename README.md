@@ -35,7 +35,7 @@ If a restriction is violated, EoWordle will ignore the input and select a random
 
 ## Assumptions:
 - words.txt exists in `EoWordle\Util\words.txt` and contains one word per line. it cannot be empty.
-- words in the list can only contain the letters a - z.
+- words in the list can only contain the letters a-z and A-Z.
 - app is running on Windows (no other OS tested)
 - the tests are based on the assumption that the GameConfig is set to classic Wordle rules (i.e 5 letters per word, and 6 guesses)
 
