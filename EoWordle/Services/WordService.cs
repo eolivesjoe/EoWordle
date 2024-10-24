@@ -41,7 +41,7 @@ public class WordService : IWordService
         }
         else
         {
-            Console.WriteLine("Please ensure that your words.txt exists in the Util folder.");
+            throw new Exception("Util/words.txt does not exist.");
         }
     }
 }

@@ -14,7 +14,6 @@ public class GameViewModel : INotifyPropertyChanged
     private bool _hasWon;
     private bool _isGameOver;
     private string _currentGuess;
-    private bool _usesCustomWord = false;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -31,7 +30,6 @@ public class GameViewModel : INotifyPropertyChanged
         if (_gameModel.WordExistsInList(customWord))
         {
             _gameModel.SetCorrectWord(customWord);
-            _usesCustomWord = true;
         }
     }
 
@@ -84,7 +82,7 @@ public class GameViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (!_gameModel.WordExistsInList(_currentGuess) && !_usesCustomWord)
+        if (!_gameModel.WordExistsInList(_currentGuess))
         {
             MessageBox.Show("Word does not exist in the word list. Please try again.");
             return;
@@ -124,7 +122,6 @@ public class GameViewModel : INotifyPropertyChanged
     public void ResetGame()
     {
         _gameModel.ResetGame();
-        _usesCustomWord = false;
         _hasWon = false;
         _isGameOver = false;
         ClearGuess();

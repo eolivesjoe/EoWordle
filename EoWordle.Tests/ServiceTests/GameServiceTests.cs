@@ -77,9 +77,9 @@ public class GameServiceTests
         GuessResult result = _gameService.CheckGuess(guess, correctWord);
 
         // Assert
-        foreach (var color in result.Colours)
+        foreach (var colour in result.Colours)
         {
-            Assert.That(color, Is.EqualTo(Brushes.Gray));
+            Assert.That(colour, Is.EqualTo(Brushes.Gray));
         }
     }
 

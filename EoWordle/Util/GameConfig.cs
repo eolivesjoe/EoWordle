@@ -1,4 +1,4 @@
-﻿// Store the word length and max guesses to make it easy to update in the future if you want to make it easier or more difficult
+﻿// Store the word length and allowed guesses
 
 namespace EoWordle.Util;
 

@@ -2,7 +2,7 @@
 
 namespace EoWordle.Models;
 
-// Stores the guessed word as well as the colours for the square
+// Stores the guessed word as well as the colours for the squares
 public class GuessResult
 {
     public string Guess { get; set; } = string.Empty;

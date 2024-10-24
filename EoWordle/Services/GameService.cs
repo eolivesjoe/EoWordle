@@ -24,7 +24,7 @@ public class GameService : IGameService
             }
             else
             {
-                charExists[correctWord[i] - 'A']++;
+                charExists[correctWord[i] - 'a']++;
             }
         }
 
