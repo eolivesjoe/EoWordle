@@ -2,6 +2,9 @@
 
 EoWordle is a Wordle-inspired game built using C# and WPF with a customisable word feature and dynamic game logic.
 
+![image](https://github.com/user-attachments/assets/3c85a161-0bde-46df-8390-2a94392a701c)
+
+
 ## Launch Instructions:
 Open a terminal, navigate to the `EoWordle` project folder, then run the following commands:
 - `dotnet build`
