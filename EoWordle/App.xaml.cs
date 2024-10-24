@@ -1,6 +1,7 @@
 ﻿using EoWordle.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace EoWordle;
 
@@ -21,6 +22,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // set up exception handling
         GlobalExceptionHandlerRegistration();
 
         // set up custom word if entered
@@ -38,23 +40,25 @@ public partial class App : Application
 
     private void GlobalExceptionHandlerRegistration()
     {
-        // catches exceptions thrown on the UI thread.
-        DispatcherUnhandledException += (sender, e) =>
-        {
-            HandleException(e.Exception);
-            e.Handled = true;
-        };
+        DispatcherUnhandledException += HandleUIThreadException;
+        AppDomain.CurrentDomain.UnhandledException += HandleNonUIThreadException;
+    }
 
-        // catches any other exception
-        AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-        {
-            HandleException(e.ExceptionObject as Exception ?? new Exception("Something has gone wrong."));
-        };
+    // handling UI thread exceptions
+    private void HandleUIThreadException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        HandleException(e.Exception);
+        e.Handled = true;
+    }
 
+    // handling non-UI thread exceptions
+    private void HandleNonUIThreadException(object sender, UnhandledExceptionEventArgs e)
+    {
+        HandleException(e.ExceptionObject as Exception ?? new Exception("Something has gone wrong."));
     }
 
     private void HandleException(Exception ex)
     {
-        MessageBox.Show($"Something has gone wrong. \nError: {ex.Message}. \nStacktrace: {ex.StackTrace}");
+        MessageBox.Show($"Something has gone wrong. \nError: {ex.Message}.");
     }
 }
