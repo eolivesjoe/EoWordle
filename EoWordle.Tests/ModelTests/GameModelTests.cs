@@ -19,8 +19,8 @@ public class GameModelTests
         _gameService = Substitute.For<IGameService>();
         _wordService = Substitute.For<IWordService>();
 
-        _wordService.GetRandomWord().Returns("apple");
-        _wordService.GetWordList().Returns(new List<string> { "apple", "grape", "melon" });
+        _wordService.GetRandomWord().Returns("APPLE");
+        _wordService.GetWordList().Returns(new List<string> { "APPLE", "GRAPE", "MELON" });
 
         _gameModel = new GameModel(_wordService, _gameService);
     }
@@ -29,17 +29,17 @@ public class GameModelTests
     public void SetCorrectWord()
     {
         // Act
-        _gameModel.SetCorrectWord("grape");
+        _gameModel.SetCorrectWord("GRAPE");
 
         // Assert
-        Assert.That(_gameModel.GetCorrectWord(), Is.EqualTo("grape"));
+        Assert.That(_gameModel.GetCorrectWord(), Is.EqualTo("GRAPE"));
     }
 
     [Test]
     public void CheckGuess()
     {
         // Arrange
-        string guess = "apple";
+        string guess = "APPLE";
 
         SolidColorBrush[] brushes = new SolidColorBrush[5];
         for (int i = 0; i < brushes.Length; i++)
@@ -48,21 +48,21 @@ public class GameModelTests
         }
 
         var guessResult = new GuessResult(guess, brushes);
-        _gameService.CheckGuess(guess, "apple").Returns(guessResult);
+        _gameService.CheckGuess(guess, "APPLE").Returns(guessResult);
 
         // Act
         var result = _gameModel.CheckGuess(guess);
 
         // Assert
         Assert.That(result, Is.SameAs(guessResult));
-        _gameService.Received(1).CheckGuess(guess, "apple");
+        _gameService.Received(1).CheckGuess(guess, "APPLE");
     }
 
     [Test]
     public void WordExistsInList()
     {
         // Act
-        var result = _gameModel.WordExistsInList("grape");
+        var result = _gameModel.WordExistsInList("GRAPE");
 
         // Assert
         Assert.IsTrue(result);
@@ -72,7 +72,7 @@ public class GameModelTests
     public void WordDoesNotExistsInList()
     {
         // Act
-        var result = _gameModel.WordExistsInList("banana");
+        var result = _gameModel.WordExistsInList("BANANA");
 
         // Assert
         Assert.IsFalse(result);
@@ -82,10 +82,10 @@ public class GameModelTests
     public void WonGameCorrectGuess()
     {
         // Assert
-        _gameModel.SetCorrectWord("apple");
+        _gameModel.SetCorrectWord("APPLE");
 
         // Act
-        var result = _gameModel.WonGame("apple");
+        var result = _gameModel.WonGame("APPLE");
 
         // Assert
         Assert.IsTrue(result);
@@ -95,10 +95,10 @@ public class GameModelTests
     public void WonGameIncorrectGuess()
     {
         // Assert
-        _gameModel.SetCorrectWord("apple");
+        _gameModel.SetCorrectWord("APPLE");
 
         // Act
-        var result = _gameModel.WonGame("banana");
+        var result = _gameModel.WonGame("BANANA");
 
         // Assert
         Assert.IsFalse(result);
@@ -110,7 +110,7 @@ public class GameModelTests
         // Arrange
         for (int i = 0; i < GameConfig.MaxGuesses; i++)
         {
-            _gameModel.CheckGuess("guess");
+            _gameModel.CheckGuess("APPLE");
         }
 
         // Act
@@ -121,10 +121,10 @@ public class GameModelTests
     }
 
     [Test]
-    public void GamNoteOver()
+    public void GameNotOver()
     {
         // Arrange
-        _gameModel.CheckGuess("guess");
+        _gameModel.CheckGuess("APPLE");
 
         // Act
         var result = _gameModel.GameOver();
@@ -137,8 +137,8 @@ public class GameModelTests
     public void ResetGame()
     {
         // Arrange
-        _gameModel.CheckGuess("guess");
-        var newWord = "melon";
+        _gameModel.CheckGuess("APPLE");
+        var newWord = "MELON";
         _wordService.GetRandomWord().Returns(newWord);
 
         // Act
