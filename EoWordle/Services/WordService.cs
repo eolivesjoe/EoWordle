@@ -41,7 +41,7 @@ public class WordService : IWordService
         }
         else
         {
-            throw new Exception("Util/words.txt does not exist.");
+            throw new FileNotFoundException($"{_filePath} does not exist.");
         }
     }
 }

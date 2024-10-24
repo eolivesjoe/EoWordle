@@ -10,8 +10,9 @@ namespace EoWordle.Views;
 
 public partial class GameView : UserControl
 {
-    private int _wordLength;
-    private int _maxGuesses;
+    private readonly int _wordLength;
+    private readonly int _maxGuesses;
+
     private int _currentGuessRow = 0;
     private TextBox[,] _textBoxes;
 

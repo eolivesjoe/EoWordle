@@ -105,7 +105,7 @@ public class GameModelTests
     }
 
     [Test]
-    public void GameOverd()
+    public void GameOver()
     {
         // Arrange
         for (int i = 0; i < GameConfig.MaxGuesses; i++)

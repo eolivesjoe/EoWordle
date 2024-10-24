@@ -49,6 +49,42 @@ public class GameServiceTests
     }
 
     [Test]
+    public void CheckGuessDatedandDrags()
+    {
+        // Arrange
+        string guess = "DRAGS";
+        string correctWord = "DATED";
+
+        // Act
+        GuessResult result = _gameService.CheckGuess(guess, correctWord);
+
+        // Assert
+        Assert.That(result.Colours[0], Is.EqualTo(Brushes.Green));
+        Assert.That(result.Colours[1], Is.EqualTo(Brushes.Gray));
+        Assert.That(result.Colours[2], Is.EqualTo(Brushes.Yellow));
+        Assert.That(result.Colours[3], Is.EqualTo(Brushes.Gray));
+        Assert.That(result.Colours[4], Is.EqualTo(Brushes.Gray));
+    }
+
+    [Test]
+    public void CheckGuessManyDs()
+    {
+        // Arrange
+        string guess = "ADDED";
+        string correctWord = "DADDY";
+
+        // Act
+        GuessResult result = _gameService.CheckGuess(guess, correctWord);
+
+        // Assert
+        Assert.That(result.Colours[0], Is.EqualTo(Brushes.Yellow));
+        Assert.That(result.Colours[1], Is.EqualTo(Brushes.Yellow));
+        Assert.That(result.Colours[2], Is.EqualTo(Brushes.Green));
+        Assert.That(result.Colours[3], Is.EqualTo(Brushes.Gray));
+        Assert.That(result.Colours[4], Is.EqualTo(Brushes.Yellow));
+    }
+
+    [Test]
     public void CheckGuessAllYellow()
     {
         // Arrange

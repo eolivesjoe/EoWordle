@@ -28,18 +28,18 @@ public class GameService : IGameService
             }
         }
 
-        // Second loop we check if any char in the guess match with the target word, if it does we paint it yellow and remove it from the array
-        // If not we paint it gray
-        for (int i = 0;i != guess.Length; ++i)
+        // Second loop we check anything in the guess that hasn't been painted green, if it still exists in the target word, we paint it yellow, and remove it from the target word
+        // if no match exists we paint it gray
+        for (int i = 0; i != guess.Length; ++i)
         {
-            if (charExists[guess[i] - 'A'] > 0 && colours[i] != Brushes.Green)
+            if (colours[i] != Brushes.Green)
             {
-                colours[i] = Brushes.Yellow;
-                charExists[guess[i] - 'A']--;
-            }
-            else
-            {
-                if (colours[i] != Brushes.Green)
+                if (charExists[guess[i] - 'A'] > 0)
+                {
+                    colours[i] = Brushes.Yellow;
+                    charExists[guess[i] - 'A']--;
+                }
+                else
                 {
                     colours[i] = Brushes.Gray;
                 }
