@@ -36,5 +36,3 @@ If a restriction is violated, EoWordle will ignore the input and select a random
 - words in the list can only contain the letters a-z and A-Z.
 - app is running on Windows (no other OS tested).
 - the tests assumes that GameConfig is set to classic Wordle rules (i.e 5 letters per word, and 6 guesses)
-
-The word list used can be found at `http://gwicks.net/dictionaries.htm`
